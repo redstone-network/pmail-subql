@@ -17,14 +17,14 @@ schema:
   file: ./schema.graphql
 network:
   # The genesis hash of the network (hash of block 0)
-  chainId: "0x8fa8d7bac1da6e0a6430ebc5a0a6072b19cfac7dcffe62cb5f2f05948e835650"
+  chainId: "0x4f44f84953cd627b6ba9b3ec7fd2a55f551a9c896521928f4f441e592a3d7fcb"
   # This endpoint must be a public non-pruned archive node
   # Public nodes may be rate limited, which can affect indexing speed
   # When developing your project we suggest getting a private API key
   # You can get them from OnFinality for free https://app.onfinality.io
   # https://documentation.onfinality.io/support/the-enhanced-api-service
   # endpoint: "wss://polkadot.api.onfinality.io/public-ws"
-  endpoint: "ws://192.168.8.103:9944"
+  endpoint: "ws://192.168.8.114:9944"
   # Optionally provide the HTTP endpoint of a full chain dictionary to speed up processing
   # dictionary: "https://api.subquery.network/sq/subquery/ws://192.168.8.103:9944"
 dataSources:
@@ -37,4 +37,16 @@ dataSources:
           kind: substrate/EventHandler
           filter:
             module: mail
-            method: SendMail
+            method: SendMailSuccess
+
+        - handler: handleSendAlias
+          kind: substrate/EventHandler
+          filter:
+            module: mail
+            method: SetAliasSuccess
+
+        - handler: handleSendAlias
+          kind: substrate/EventHandler
+          filter:
+            module: mail
+            method: UpdateAliasSuccess

@@ -30,7 +30,7 @@ type Mail @entity {
 
 type Contact @entity {
   id: ID! #Accountid + MailAddress id
-  owner: Account!
-  addr: MailAddress!
-  alias: String!
+  owner: Account
+  addr: MailAddress
+  alias: String
 }

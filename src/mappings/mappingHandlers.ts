@@ -5,7 +5,7 @@ import {
 } from "@subql/types";
 import { Account, MailAddress, Mail, Contact } from "../types";
 import { AccountId } from "@polkadot/types/interfaces";
-import { getAccount, getMailAddress } from "../utils";
+import { getAccount, getMailAddress, getContact } from "../utils";
 
 
 export async function handleSendMail(
@@ -24,15 +24,18 @@ export async function handleSendMail(
     },
   } = event;
 
+  let fromObj = from.toJSON();
+  let toObj = to.toJSON();
+
   {
-    let strType = Object.keys(from)[0];
-    let strAddr = from[strType];
+    let strType = Object.keys(fromObj)[0];
+    let strAddr = fromObj[strType].toString();
     let mailAddress = await getMailAddress(strType, strAddr);
     record.fromId = mailAddress.id;
   }
   {
-    let strType = Object.keys(to)[0];
-    let strAddr = to[strType];
+    let strType = Object.keys(toObj)[0];
+    let strAddr = toObj[strType].toString();
     let mailAddress = await getMailAddress(strType, strAddr);
     record.toId = mailAddress.id;
   }
@@ -56,11 +59,12 @@ export async function handleSendAlias(
 
   const owner = await getAccount(account.toString());
 
-  let strType = Object.keys(addr)[0];
-  let strAddr = addr[strType];
+  let addrObj = addr.toJSON();
+  let strType = Object.keys(addrObj)[0];
+  let strAddr = addrObj[strType].toString();
   let mailAddress = await getMailAddress(strType, strAddr);
 
-  const record = new Contact(
+  const record = await getContact(
     `${owner.id}-${
       mailAddress.id
     }`
@@ -68,6 +72,6 @@ export async function handleSendAlias(
   
   record.ownerId = owner.id;
   record.addrId = mailAddress.id;
-  record.alias = alias.toString();
+  record.alias = alias.toHuman().toString();
   await record.save();
 }

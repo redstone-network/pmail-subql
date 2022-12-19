@@ -8,6 +8,8 @@
     "codegen": "subql codegen",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
     "dev": "subql codegen && subql build && docker-compose pull && docker-compose up --remove-orphans",
+    "d": "subql build && docker compose down && rm -rf .data && docker compose up --remove-orphans",
+    "k": "subql build &&  docker stop pmail-subql-graphql-engine-1 | true &&  docker stop pmail-subql-subquery-node-1 | true && docker stop pmail-subql-postgres-1 | true && pmail-subql-graphql-engine-1 | true &&  docker rm pmail-subql-subquery-node-1 | true && docker rm pmail-subql-postgres-1  | true && rm -rf .data  && docker compose up ",
     "prepack": "rm -rf dist && npm run build",
     "test": "jest"
   },

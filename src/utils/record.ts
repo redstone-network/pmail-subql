@@ -1,9 +1,8 @@
-
 import { Option } from "@polkadot/types"
 import { SubstrateBlock, SubstrateExtrinsic } from "@subql/types";
 
 import {
-  Account, MailAddress
+  Account, MailAddress, Contact
 } from "../types";
 
 export const getAccount = async (address: string) => {
@@ -28,6 +27,18 @@ export const getMailAddress = async (type: string, mailaddress: string) => {
 
     record.type = type;
     record.mailaddress = mailaddress;
+
+    await record.save();
+  }
+
+  return record;
+}
+
+export const getContact = async (id: string) => {
+  let record = await Contact.get(id);
+
+  if (!record) {
+    record = new Contact(id);
 
     await record.save();
   }
